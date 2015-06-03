@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?altova_sps C:\Users\Bruce\Documents\DMN\dmn.sps?>
+<Definitions id="def01" namespace="http://brsilver.com/dmn/test01" xmlns="http://www.omg.org/spec/DMN/20130901" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:n1="http://brsilver.com/dmn" name="myDMN" xsi:schemaLocation="http://www.omg.org/spec/DMN/20130901 dmn.xsd">
+	<ItemDefinition id="item1" name="EligibilityType">
+		<typeDefinition>string</typeDefinition>
+		<allowedValue id="elig01">
+			<text>INELIGIBLE</text>
+		</allowedValue>
+		<allowedValue id="elig02">
+			<text>ELIGIBLE</text>
+		</allowedValue>
+	</ItemDefinition>
+	<ItemDefinition id="item2" name="BureauCallTypeType">
+		<typeDefinition>string</typeDefinition>
+		<allowedValue id="bur01">
+			<text>FULL</text>
+		</allowedValue>
+		<allowedValue id="bur02">
+			<text>MINI</text>
+		</allowedValue>
+		<allowedValue id="bur03">
+			<text>NONE</text>
+		</allowedValue>
+	</ItemDefinition>
+	<ItemDefinition id="item3" name="StrategyType">
+		<typeDefinition>string</typeDefinition>
+		<allowedValue id="stra01">
+			<text>DECLINE</text>
+		</allowedValue>
+		<allowedValue id="stra02">
+			<text>BUREAU</text>
+		</allowedValue>
+		<allowedValue id="stra03">
+			<text>THROUGH</text>
+		</allowedValue>
+	</ItemDefinition>
+	<Decision id="dec01" name="Strategy">
+		<question>Is credit bureau call required?</question>
+		<allowedAnswers>Yes (BUREAU) or No (DECLINE, THROUGH)</allowedAnswers>
+		<outputDefinition href="#item3"/>
+		<informationRequirement>
+			<InformationItem id="info1" name="BureauCall"/>
+			<requiredDecision href="#dec02"/>
+		</informationRequirement>
+		<informationRequirement>
+			<InformationItem id="info2" name="Eligibility"/>
+			<requiredDecision href="#dec03"/>
+		</informationRequirement>
+		<DecisionTable id="dec01table" name="strategy" hitPolicy="UNIQUE" isComplete="true" isConsistent="true" preferedOrientation="Rule-as-Row" >
+			<clause name="Eligibility">
+				<inputExpression id="dec01-ix1" name="Eligibility">
+					<inputVariable>info2</inputVariable>
+					<itemDefinition href="#item1"/>
+				</inputExpression>
+				<inputEntry id="dec01-1-1">
+					<text>INELIGIBLE</text>
+				</inputEntry>
+				<inputEntry id="dec01-1-2">
+					<text>ELIGIBLE</text>
+				</inputEntry>
+			</clause>
+			<clause name="Bureau Call Type">
+				<inputExpression id="dec01-ix2" name="Bureau Call Type">
+					<inputVariable>info1</inputVariable>
+					<itemDefinition href="#item2"/>
+				</inputExpression>
+				<inputEntry id="dec01-2-1">
+					<text>FULL, MINI</text>
+				</inputEntry>
+				<inputEntry id="dec01-2-2">
+					<text>NONE</text>
+				</inputEntry>
+			</clause>
+			<clause name="Strategy">
+				<outputDefinition href="#item3"/>
+				<outputEntry id="dec01-3-1">
+					<text>DECLINE</text>
+				</outputEntry>
+				<outputEntry id="dec01-3-2">
+					<text>BUREAU</text>
+				</outputEntry>
+				<outputEntry id="dec01-3-3">
+					<text>THROUGH</text>
+				</outputEntry>
+			</clause>
+			<rule>
+				<condition>dec01-1-1</condition>
+				<conclusion>dec01-3-1</conclusion>
+			</rule>
+			<rule>
+				<condition>dec01-1-2 dec01-2-1</condition>
+				<conclusion>dec01-3-2</conclusion>
+			</rule>
+			<rule>
+				<condition>dec01-1-2 dec01-2-2</condition>
+				<conclusion>dec01-3-3</conclusion>
+			</rule>
+		</DecisionTable>
+	</Decision>
+	<Decision id="dec02" name="BureauCall"/>
+	<Decision id="dec03" name="Eligibility"/>
+</Definitions>

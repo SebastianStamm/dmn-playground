@@ -1,0 +1,18 @@
+{
+  "name": "camunda-dmn-editor",
+  "version": "0.0.1",
+  "description": "An embeddable editor and viewer for DMN tables",
+  "private": true,
+  "author": {
+    "name": "Sebastian Stamm",
+    "url": "https://github.com/SebastianStamm"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "^8.1.0"
+  },
+  "dependencies": {
+    "moddle": "^0.6.0",
+    "moddle-xml": "^0.7.0"
+  }
+}
