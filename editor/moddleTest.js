@@ -20,24 +20,15 @@ var dmnJSON = {
       "name": "Root",
       "superClass": [ "Base" ],
       "properties": [
-        { "name": "cars", "type": "Car", "isMany": true },
-        { "name": "moreCars", "type": "Car", "isMany": true, 'isReference': true }
-
+        { "name": "cars", "type": "Car", "isMany": true }
       ]
     },
     {
       "name": "Car",
       "superClass": [ "Base" ],
       "properties": [
-        { "name": "name", "type": "String", "isAttr": true, "default": "No Name" }
-      ]
-    },
-    {
-      "name": "Car2",
-      "superClass": [ "Car" ],
-      "properties": [
+        { "name": "name", "type": "String", "isAttr": true, "default": "No Name" },
         { "name": "power", "type": "Integer", "isAttr": true },
-        { "name": "similar", "type": "Car", "isMany": true, "isReference": true }
       ]
     }
   ]
@@ -45,25 +36,9 @@ var dmnJSON = {
 
 
 var model = new Moddle([ dmnJSON ]);
-/*
-var t = dmn.create('dmn:Test');
-var r = dmn.create('dmn:Definitions', { name : t });
 
-console.log(r);
-
-var writer = new ModdleXML.Writer();
-
-var xml = writer.toXML(r);
-
-console.log(xml);
-*/
-
-
-var taiga = model.create('my:Car', { name: 'Taiga' });
-
-console.log(taiga);
-// { $type: 'c:Car', name: 'Taiga' };
-var cars = model.create('my:Root', { moreCars: [taiga] });
+var cars = model.create('my:Root');
+cars.get('cars').push(model.create('my:Car', { power: 10 }));
 
 var options = { format: false, preamble: false };
 var writer = new ModdleXML.Writer(options);
@@ -71,9 +46,9 @@ var writer = new ModdleXML.Writer(options);
 var xml = writer.toXML(cars);
 
 console.log(xml);
-/*
-var reader = new ModdleXML.Reader(dmn);
-var rootHandler = reader.handler('dmn:Definitions');
+
+var reader = new ModdleXML.Reader(dmnJSON);
+var rootHandler = reader.handler('my:Root');
 
 reader.fromXML(xml, rootHandler, function(err, cars, context) {
 
@@ -89,5 +64,3 @@ reader.fromXML(xml, rootHandler, function(err, cars, context) {
 
   }
 });
-
-*/

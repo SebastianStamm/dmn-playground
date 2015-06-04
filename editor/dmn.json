@@ -1,6 +1,6 @@
 {
   "name": "DMN",
-  "uri": "http://dmn",
+  "uri": "http://www.omg.org/spec/DMN/20130901",
   "prefix": "",
   "types": [
     {
@@ -9,6 +9,12 @@
         { "name": "description", "type": "String" },
         { "name": "id", "type": "String", "isAttr": true },
         { "name": "name", "type": "String", "isAttr": true }
+      ]
+    },
+    {
+      "name": "DMNElementReference",
+      "properties": [
+        { "name": "href", "type": "String", "isAttr": true }
       ]
     },
     {
@@ -37,7 +43,8 @@
       "name": "Expression",
       "superClass": [ "DMNElement" ],
       "properties": [
-        { "name": "itemDefinition", "type": "ItemDefinition", "isReference": true}
+        { "name": "inputVariable", "type": "DMNElement", "isReference": true},
+        { "name": "itemDefinition", "type": "DMNElementReference"}
       ]
     },
     {
@@ -60,7 +67,7 @@
         { "name": "question", "type": "String", "isAttr": true },
         { "name": "allowedAnswers", "type": "String", "isAttr": true },
         { "name": "DecisionTable", "type": "DecisionTable" },
-        { "name": "outputDefinition", "type": "ItemDefinition", "isReference": true}
+        { "name": "outputDefinition", "type": "DMNElementReference"}
       ]
     },
     {
@@ -80,10 +87,10 @@
       "name": "Clause",
       "properties": [
         { "name": "name", "type": "String", "isAttr": true },
+        { "name": "inputExpression", "type": "Expression" },
+        { "name": "outputDefinition", "type": "DMNElementReference" },
         { "name": "inputEntry", "type": "LiteralExpression", "isMany": true },
-        { "name": "outputEntry", "type": "LiteralExpression", "isMany": true },
-        { "name": "inputExpression", "type": "LiteralExpression" },
-        { "name": "outputDefinition", "type": "ItemDefinition", "isReference": true }
+        { "name": "outputEntry", "type": "LiteralExpression", "isMany": true }
       ]
     },
     {
